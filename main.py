@@ -33,3 +33,23 @@ async def get_user_coding(username: str, language: str):
 async def get_order(order_id: int) -> dict:
     await asyncio.sleep(5)  # Simulate a delay
     return {"order_id": order_id, "message": "Order details fetched successfully simulated 5 seconds delay"}
+
+
+# user profile endpoint
+@app.get("/profile/{username}")
+async def get_profile(username: str) -> dict:
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"username": username, "message": "User profile fetched successfully simulated 5 seconds delay"}
+
+# url params using
+@app.get("/buyer/")
+async def get_buyer(name: str, age: int) -> dict:
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"name": name, "age": age, "message": "Buyer details fetched successfully simulated 5 seconds delay"}
+
+
+# using the default value for the params
+@app.get("/unknown/")
+async def get_unknown(name: str = "Unknown", age: int = 0) -> dict:
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"name": name, "age": age, "message": "Unknown details fetched successfully simulated 5 seconds delay"}
