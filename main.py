@@ -16,3 +16,9 @@ async def second():
 async def get_user(user: str, age: int):
     await asyncio.sleep(5)  # Simulate a delay
     return {"user": user, "age": age, "message": "User details fetched successfully"}
+
+# using the multiple params in the app
+@app.get("/fullname/{first_name}/{last_name}")
+async def get_fullname(first_name: str, last_name: str):
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"full_name": f"{first_name} {last_name}", "message": "Full name fetched successfully"}
