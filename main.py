@@ -27,3 +27,9 @@ async def get_fullname(first_name: str, last_name: str):
 async def get_user_coding(username: str, language: str):
     await asyncio.sleep(5)  # Simulate a delay
     return {"username": username, "language": language, "message": "User coding details fetched successfully simulated 5 seconds delay"}
+
+# simulating the order id  for the user 
+@app.get("/order/{order_id}")
+async def get_order(order_id: int) -> dict:
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"order_id": order_id, "message": "Order details fetched successfully simulated 5 seconds delay"}
