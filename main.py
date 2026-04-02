@@ -21,4 +21,9 @@ async def get_user(user: str, age: int):
 @app.get("/fullname/{first_name}/{last_name}")
 async def get_fullname(first_name: str, last_name: str):
     await asyncio.sleep(5)  # Simulate a delay
-    return {"full_name": f"{first_name} {last_name}", "message": "Full name fetched successfully"}
+    return {"full_name": f"{first_name} {last_name}", "message": "Full name fetched successfully simulated 5 seconds delay"}
+
+@app.get("/usercoding/{username}/{language}")
+async def get_user_coding(username: str, language: str):
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"username": username, "language": language, "message": "User coding details fetched successfully simulated 5 seconds delay"}
