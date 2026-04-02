@@ -13,5 +13,6 @@ async def second():
 
 # adding the dict enpoint to the app
 @app.get("/user/{user}/{age}")
-async def user(user: str, age: int) -> dict:
-    return {"user": user, "age": age}
+async def get_user(user: str, age: int):
+    await asyncio.sleep(5)  # Simulate a delay
+    return {"user": user, "age": age, "message": "User details fetched successfully"}
