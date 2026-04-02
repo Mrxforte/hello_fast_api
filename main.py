@@ -10,3 +10,8 @@ async def index():
 async def second():
     await asyncio.sleep(5)  # Simulate a delay
     return {"message": "This is the second endpoint"}
+
+# adding the dict enpoint to the app
+@app.get("/user/{user}/{age}")
+async def user(user: str, age: int) -> dict:
+    return {"user": user, "age": age}
