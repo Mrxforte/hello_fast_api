@@ -1,182 +1,195 @@
-# Hello FastAPI
+# Scalable Multi-Vendor FastAPI
 
-A compact FastAPI playground with a few path-parameter examples, clean JSON responses, and an intentional `5-second` delay on every endpoint to simulate async work.
+Clean Architecture backend starter for a marketplace platform with authentication, role-based access, vendor operations, product catalog management, and order flow.
 
-## Overview
+---
 
-This project is a small learning app built with FastAPI. It demonstrates:
+## Project Snapshot
 
-- basic route creation
-- async endpoint handlers
-- path parameters with strings and integers
-- automatic API docs from FastAPI
-- delayed responses using `asyncio.sleep(5)`
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.116-009688?logo=fastapi&logoColor=white)
+![Architecture](https://img.shields.io/badge/Architecture-Clean-0A0A0A)
+![Auth](https://img.shields.io/badge/Auth-JWT-8A2BE2)
 
-## Features
+## Why This Template
 
-- `GET /` welcome endpoint
-- `GET /second` secondary demo endpoint
-- `GET /user/{user}/{age}` dynamic user details
-- `GET /fullname/{first_name}/{last_name}` full-name formatter
-- `GET /usercoding/{username}/{language}` coding profile endpoint
-- `GET /order/{order_id}` typed integer order lookup
+- Clear separation of domain, application, infrastructure, and presentation layers
+- Ready-to-run auth with JWT and role checks
+- Marketplace-focused modules for vendors, products, and orders
+- Easy to swap storage implementation from in-memory to SQL/NoSQL
+- Great starting point for scaling into a production backend
 
-## Tech Stack
+## Feature Set
 
-- Python
-- FastAPI
-- Uvicorn
-- asyncio
+- JWT authentication
+- Role-based authorization: `admin`, `vendor`, `customer`
+- Vendor profile creation and retrieval
+- Product CRUD for vendor-owned products
+- Customer order creation with stock validation
+- Vendor order confirmation flow
+- Health check endpoint
 
-## Project Structure
+---
+
+## Architecture Layout
 
 ```text
-hello_fast_api/
-|-- main.py
-|-- README.md
+app/
+  domain/
+    entities/
+    repositories/
+    services/
+  application/
+    schemas/
+    use_cases/
+  infrastructure/
+    repositories/
+    security/
+    container.py
+  presentation/
+    api/v1/
+      routers/
+main.py
+requirements.txt
 ```
 
-## Getting Started
+## Layer Responsibilities
 
-### 1. Create and activate a virtual environment
+| Layer | Responsibility |
+|---|---|
+| Domain | Business entities, repository contracts, core rules |
+| Application | Use-cases and request/response schemas |
+| Infrastructure | Security, dependency wiring, repository implementations |
+| Presentation | FastAPI routers and HTTP transport layer |
 
-Windows PowerShell:
+---
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
+## Quick Start
 
-### 2. Install dependencies
+### 1) Create environment
 
 ```bash
-pip install fastapi uvicorn
+python -m venv .venv
 ```
 
-### 3. Run the app
+### 2) Activate environment
+
+```bash
+.venv\Scripts\activate
+```
+
+### 3) Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4) Run server
 
 ```bash
 uvicorn main:app --reload
 ```
 
-The server will usually start at:
-
-```text
-http://127.0.0.1:8000
-```
-
-## Interactive API Docs
-
-FastAPI generates docs automatically:
+### 5) Open API docs
 
 - Swagger UI: `http://127.0.0.1:8000/docs`
 - ReDoc: `http://127.0.0.1:8000/redoc`
 
-## API Endpoints
+---
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/` | Returns a hello message |
-| GET | `/second` | Returns a second sample response |
-| GET | `/user/{user}/{age}` | Returns a user name and age |
-| GET | `/fullname/{first_name}/{last_name}` | Combines first and last name |
-| GET | `/usercoding/{username}/{language}` | Returns username and favorite language |
-| GET | `/order/{order_id}` | Returns an order id and message |
+## Default Admin User
 
-## Example Requests
+The app seeds one admin account on startup.
 
-### Root
-
-```bash
-curl http://127.0.0.1:8000/
-```
-
-Response:
-
-```json
-{
-  "message": "Hello World",
-  "description": "You are waited 5 seconds to see this message"
-}
-```
-
-### User Details
-
-```bash
-curl http://127.0.0.1:8000/user/Azamat/25
-```
-
-Response:
-
-```json
-{
-  "user": "Azamat",
-  "age": 25,
-  "message": "User details fetched successfully"
-}
-```
-
-### Full Name
-
-```bash
-curl http://127.0.0.1:8000/fullname/John/Doe
-```
-
-Response:
-
-```json
-{
-  "full_name": "John Doe",
-  "message": "Full name fetched successfully simulated 5 seconds delay"
-}
-```
-
-### Coding Profile
-
-```bash
-curl http://127.0.0.1:8000/usercoding/alice/python
-```
-
-Response:
-
-```json
-{
-  "username": "alice",
-  "language": "python",
-  "message": "User coding details fetched successfully simulated 5 seconds delay"
-}
-```
-
-### Order Lookup
-
-```bash
-curl http://127.0.0.1:8000/order/101
-```
-
-Response:
-
-```json
-{
-  "order_id": 101,
-  "message": "Order details fetched successfully simulated 5 seconds delay"
-}
-```
-
-## Important Note
-
-Every endpoint intentionally waits `5 seconds` before responding. This is part of the current app behavior and is useful for testing async responses or simulating slow operations.
-
-## Main Application
-
-The FastAPI app is defined in [main.py](main.py).
-
-## Next Improvements
-
-- add a `requirements.txt` file
-- improve response text grammar
-- add query parameters and request validation examples
-- add unit tests for endpoints
+- Email: `admin@example.com`
+- Password: `Admin123!`
 
 ---
 
-Built with FastAPI for learning and experimentation.
+## Authorization Matrix
+
+| Endpoint Group | Admin | Vendor | Customer |
+|---|---|---|---|
+| Auth | Yes | Yes | Yes |
+| Vendors `/me` | No | Yes | No |
+| Products write | No | Yes | No |
+| Products read | Yes | Yes | Yes |
+| Orders create | No | No | Yes |
+| Orders confirm | No | Yes | No |
+| Orders `/me` | Yes | Yes | Yes |
+
+---
+
+## API Endpoints
+
+### Health
+
+| Method | Path |
+|---|---|
+| GET | `/api/v1/health` |
+
+### Auth
+
+| Method | Path |
+|---|---|
+| POST | `/api/v1/auth/register` |
+| POST | `/api/v1/auth/login` |
+
+### Vendors
+
+| Method | Path | Access |
+|---|---|---|
+| POST | `/api/v1/vendors/me` | Vendor |
+| GET | `/api/v1/vendors/me` | Vendor |
+| GET | `/api/v1/vendors` | Public/Auth |
+
+### Products
+
+| Method | Path | Access |
+|---|---|---|
+| POST | `/api/v1/products` | Vendor |
+| PATCH | `/api/v1/products/{product_id}` | Vendor |
+| DELETE | `/api/v1/products/{product_id}` | Vendor |
+| GET | `/api/v1/products` | Public/Auth |
+| GET | `/api/v1/products/vendor/{vendor_id}` | Public/Auth |
+
+### Orders
+
+| Method | Path | Access |
+|---|---|---|
+| POST | `/api/v1/orders` | Customer |
+| PATCH | `/api/v1/orders/{order_id}/confirm` | Vendor |
+| GET | `/api/v1/orders/me` | Customer, Vendor, Admin |
+
+---
+
+## Auth Usage Example
+
+1. Register a user with role `vendor` or `customer`
+2. Login and receive `access_token`
+3. Pass token in request header
+
+```text
+Authorization: Bearer <access_token>
+```
+
+---
+
+## Current Storage Mode
+
+This template currently uses in-memory repositories for fast local development.
+
+To move to production:
+
+1. Add database-backed repositories under `app/infrastructure/repositories`
+2. Replace container bindings in `app/infrastructure/container.py`
+3. Add migrations and persistent configuration
+
+---
+
+## Next Improvements
+
+- Add refresh tokens and token revocation
+- Add pagination, filtering, and search for products
+- Add integration tests and CI pipeline
+- Add observability (structured logs, tracing, metrics)
