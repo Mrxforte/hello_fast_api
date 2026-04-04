@@ -1,4 +1,4 @@
-# Scalable Multi-Vendor FastAPI
+# Eshop API
 
 Clean Architecture backend starter for a marketplace platform with authentication, role-based access, vendor operations, product catalog management, and order flow.
 

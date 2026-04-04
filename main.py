@@ -4,7 +4,7 @@ from app.presentation.api.v1.api import api_router
 
 
 app = FastAPI(
-    title="Scalable Multi-Vendor REST API",
+    title="Eshop API",
     description="FastAPI clean architecture backend with auth, vendors, products, and orders",
     version="1.0.0",
 )
